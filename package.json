@@ -1,0 +1,33 @@
+{
+  "name": "shatranj",
+  "version": "1.0.0",
+  "description": "A Chess Game",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "chess"
+  ],
+  "author": "shubhu",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.14.1",
+    "compression": "^1.6.0",
+    "errorhandler": "^1.4.2",
+    "express": "^4.13.3",
+    "jade": "^1.11.0",
+    "lodash": "^3.10.1",
+    "method-override": "^2.3.5",
+    "morgan": "^1.6.1",
+    "nib": "^1.1.0",
+    "serve-favicon": "^2.3.0",
+    "stylus": "^0.52.4"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-jade": "^1.1.0",
+    "gulp-nodemon": "^2.0.4",
+    "gulp-stylus": "^2.1.0"
+  }
+}
