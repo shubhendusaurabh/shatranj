@@ -17,7 +17,7 @@ app.set('view engine', 'jade');
 app.use(morgan('dev'));
 app.use('/public', express.static(path.join(__dirname, 'public')));
 app.use('/bower_components', express.static(path.join(__dirname, 'bower_components')));
-app.use(serveFavicon(path.join(__dirname + '/public/imgs/favicon.ico')));
+app.use(serveFavicon(path.join(__dirname + '/public/img/favicon.ico')));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
