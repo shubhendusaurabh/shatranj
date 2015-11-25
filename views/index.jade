@@ -15,11 +15,19 @@ html
     link(rel="stylesheet", href="/bower_components/bootstrap-material-design/dist/css/roboto.min.css")
     link(rel="stylesheet", href="/bower_components/bootstrap-material-design/dist/css/material-fullpalette.css")
     link(rel="stylesheet", href="/bower_components/bootstrap-material-design/dist/css/ripples.min.css")
+    link(rel="stylesheet", href="/public/css/chessboard-0.3.0.min.css")
     link(rel="stylesheet", href="/public/css/styles.css")
   
   body
     header.header
+      //- h1 Shatranj
     article.container
+      article.chessboard-container
+        p#status.text-info
+        div#board
     footer.footer
   script(src="/bower_components/jquery/dist/jquery.min.js")
   script(src="/bower_components/bootstrap/dist/js/bootstrap.min.js")
+  script(src="/bower_components/chess.js/chess.min.js")
+  script(src="/public/js/chessboard-0.3.0.min.js")
+  script(src="/public/js/scripts.js")
