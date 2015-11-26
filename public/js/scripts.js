@@ -2,6 +2,8 @@ var game = new Chess();
 var boardEl = $('#board');
 var squareToHighlight;
 
+var stockfish = new Worker('/public/js/stockfish.js');
+
 var removeHighlights = function (color) {
   boardEl.find('.square-55d63').removeClass('highlight-' + color);
 };
