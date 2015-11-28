@@ -75,7 +75,7 @@ var onDrop = function(source, target) {
   boardEl.find('.square-' + target).addClass('highlight-white');
 
   updateStatus();
-  engine.prepareMove();
+  // engine.prepareMove();
 };
 
 var onSnapEnd = function () {
@@ -426,10 +426,19 @@ function engineGame(options) {
       prepareMove()
     }
   };
-}
+};
 
-var engine = engineGame({skill: 20});
-engine.reset();
-engine.setSkillLevel(4);
-engine.setPlayerColor('white');
-engine.start();
+// var engine = engineGame({skill: 20});
+// engine.reset();
+// engine.setSkillLevel(20);
+// engine.setPlayerColor('white');
+// engine.start();
+
+var socket = io.connect('http://localhost:3000');
+socket.on('connected', function (data) {
+  console.log(data);
+  socket.emit('move', {msg: 'hello'});
+});
+$('.startGame').on('click', function () {
+  socket.emit('start', {orientation: 'white'});
+});

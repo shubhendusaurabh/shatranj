@@ -8,6 +8,7 @@ var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
 var compression = require('compression');
 var errorHandler = require('errorhandler');
+var _ = require('lodash');
 
 var env = process.env.NODE_ENV || 'development';
 
@@ -44,5 +45,6 @@ if (env == 'production') {
 }
 
 var server = app.listen(process.env.PORT || 3000);
+var sockets = require('./sockets')(server);
 
 require('./routes')(app);
