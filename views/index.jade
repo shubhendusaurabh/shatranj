@@ -25,6 +25,10 @@ html
       article.chessboard-container
         p#status.text-info
         div#board
+        label White
+        input(type="radio", name="orientation", value="white")
+        label Black
+        input(type="radio", name="orientation", value="black")
       button.btn.startGame Start
     footer.footer
   script(src="/bower_components/jquery/dist/jquery.min.js")

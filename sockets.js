@@ -12,16 +12,14 @@ module.exports = function (server) {
 
   io.on('connection', function (socket) {
     users.push({id: socket.id, status: 'idle'});
+    var user = _.find(users, function (user) {
+      return user.id == socket.id;
+    });
     socket.emit('connected', {msg: 'welcome to Shatranj', id: socket.id});
     socket.on('start', function (data) {
-      console.log('start');
-      // set user status to waiting
-      var user = _.find(users, function (user) {
-        return user.id == socket.id;
-      });
+      user.orientation = data.orientation;
       // find empty room or create new
       var room = _(rooms).find({status: 'available'});
-      // var room = _.chain(rooms).sample(1).find(users, {status: 'available'});
       console.log(room);
       if (!room) {
         room = new Room(_.sample(roomNames));
@@ -29,14 +27,37 @@ module.exports = function (server) {
         rooms.push(room);
       }
       room.addPlayer(user);
+      socket.room = room;
       user.status = 'waiting';
-      socket.join(room.name);
+      console.log(socket.room, room);
+      socket.join(room.id);
+      if (room.status == 'full') {
+        users = room.getPlayers();
+        // change users status to playing
+        _.map(users, function (user) {
+          user.status = 'playing';
+        });
+        console.log(room.name, room.id);
+        // give preference to 1st user to his preferred choice
+        if (room.players[0].orientation == room.players[1].orientation) {
+          if (room.players[0].orientation == 'white') {
+            room.players[1].orientation = 'black';
+          } else {
+            room.players[1].orientation = 'white';
+          }
+        }
+        io.to(room.id).emit('roomFull', {users: room.players});
+        io.to(room.id).emit('begin', {});
+      }
       console.log(data);
     });
 
     socket.on('move', function (data) {
+      if (!socket.room) {
+        return false;
+      }
+      io.to(socket.room.id).emit('move', data);
       console.log(data);
     });
-    
   });
 };

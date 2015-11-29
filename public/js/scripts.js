@@ -62,7 +62,7 @@ var onDrop = function(source, target) {
   if (move === null) {
     return 'snapback';
   }
-
+  socket.emit('move', {from: source, to: target, promotion: 'q'});
   // remove black highlights
   removeHighlights('black');
   boardEl.find('.square-' + move.from).addClass('highlight-black');
@@ -128,9 +128,20 @@ var updateStatus = function() {
 var onMoveEnd = function() {
   boardEl.find('.square-' + squareToHighlight).addClass('highlight-black');
 };
+var board;
 
-var config = {
-  showNotation: false,
+var intialConfig = {
+  showNotation: true,
+  position: 'start',
+  draggable: false,
+  pieceTheme: '/public/img/chesspieces/wikipedia/{piece}.png',
+  showErrors: true
+};
+
+board = ChessBoard('board', intialConfig);
+
+var playingConfig = {
+  showNotation: true,
   position: 'start',
   draggable: true,
   pieceTheme: '/public/img/chesspieces/wikipedia/{piece}.png',
@@ -142,8 +153,6 @@ var config = {
   onMoveEnd: onMoveEnd,
   showErrors: true
 };
-
-var board = ChessBoard('board', config);
 
 
 function engineGame(options) {
@@ -435,12 +444,51 @@ function engineGame(options) {
 // engine.start();
 
 var socket = io.connect('http://localhost:3000');
+var orientation;
 socket.on('connected', function (data) {
   console.log(data);
   socket.emit('move', {msg: 'hello'});
 });
+socket.on('roomFull', function (data) {
+  board.destroy();
+  board = ChessBoard('board', playingConfig);
+  data.users.forEach(function (user) {
+    if (user.id == socket.id) {
+      orientation = user.orientation;
+    }
+  });
+  board.orientation(orientation);
+  console.log('Room is full, Starting game', data);
+});
+
+// on start give option to select side b/w/random if starting
+// else assign empty room orientation
+
 $('.startGame').on('click', function (e) {
   console.log('starting game');
-  socket.emit('start', {orientation: 'white'});
+  orientation = $('input[name="orientation"]:checked').val();
+  if (!orientation) {
+    alert('please select side first');
+    return false;
+  }
+  socket.emit('start', {orientation: orientation});
+  $('input[name="orientation"]:radio').attr('disabled', true);
   return false;
 });
+
+socket.on('move', function (data) {
+  console.log(data);
+  game.move(data);
+  board.position(game.fen());
+});
+
+// socket.on('orientationSelect', function (data) {
+//   console.log(data);
+//   orientation = data.orientation;
+//   $('input[name="orientation"]:radio').attr('disabled', true);
+//   $('input[name="orientation"]').each(function (index, input) {
+//     if ($(input).val() == orientation) {
+//       $(input.attr('checked', 'checked'));
+//     }
+//   });
+// });

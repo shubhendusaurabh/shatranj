@@ -26,6 +26,10 @@ Room.prototype.getPlayer = function (playerId) {
   });
 };
 
+Room.prototype.getPlayers = function () {
+  return this.players;
+};
+
 Room.prototype.setStatus = function () {
   if (this.players.length >= this.playersLimit) {
     this.status = 'full';
