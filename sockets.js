@@ -4,30 +4,39 @@ module.exports = function (server) {
   var _ = require('lodash');
   var io = require('socket.io').listen(server);
 
-  var players = [];
-  var rooms = ['shu', 'bhu'];
+  var Room = require('./room');
+
+  var users = [];
+  var rooms = [];
+  var roomNames = ['shu', 'bhu'];
 
   io.on('connection', function (socket) {
+    users.push({id: socket.id, status: 'idle'});
     socket.emit('connected', {msg: 'welcome to Shatranj', id: socket.id});
     socket.on('start', function (data) {
-      var room = _.sample(_.filter(rooms, function (room) {
-        room.length
-      }), 1);
-      player.room = _.sample(rooms, 1);
-      socket.join(player.room);
-      console.log(data);
-      if (players.length > 1) {
-        var currentPlayer = _.find(players, function (player) {
-          return player.socket.id === socket.id;
-        });
-        players = _.filter(players, function (player) {
-          player.socket.id != currentPlayer.socket.id;
-        });
+      console.log('start');
+      // set user status to waiting
+      var user = _.find(users, function (user) {
+        return user.id == socket.id;
+      });
+      // find empty room or create new
+      var room = _(rooms).find({status: 'available'});
+      // var room = _.chain(rooms).sample(1).find(users, {status: 'available'});
+      console.log(room);
+      if (!room) {
+        room = new Room(_.sample(roomNames));
+        console.log(room);
+        rooms.push(room);
       }
+      room.addPlayer(user);
+      user.status = 'waiting';
+      socket.join(room.name);
+      console.log(data);
     });
 
     socket.on('move', function (data) {
       console.log(data);
     });
+    
   });
-}
+};

@@ -439,6 +439,8 @@ socket.on('connected', function (data) {
   console.log(data);
   socket.emit('move', {msg: 'hello'});
 });
-$('.startGame').on('click', function () {
+$('.startGame').on('click', function (e) {
+  console.log('starting game');
   socket.emit('start', {orientation: 'white'});
+  return false;
 });
