@@ -1,3 +1,5 @@
+"use strict";
+
 socket.on('connected', function (data) {
   console.log(data);
   socket.emit('move', {msg: 'hello'});
@@ -45,9 +47,10 @@ socket.on('stop', function (data) {
 
 socket.on('move', function (data) {
   console.log(data);
-  game.move(data);
+  let move = game.move(data);
+  console.log(move);
   board.position(game.fen());
-  updateStatus();
+  updateStatus(move);
 });
 
 socket.on('alert', function (data) {

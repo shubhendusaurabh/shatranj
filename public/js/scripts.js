@@ -30,7 +30,7 @@ var highlightMoves = function (square) {
 };
 
 var onDragStart = function (source, piece, position) {
-  console.log(game.game_over());
+  console.log(game.game_over(``));
   if (gameStatus == 'stopped' || game.turn() != orientation) {
     return false;
   }
@@ -50,6 +50,7 @@ var onDrop = function(source, target) {
   if (move === null) {
     return 'snapback';
   }
+  console.log(move);
   socket.emit('move', {from: source, to: target, promotion: 'q'});
   // remove black highlights
   removeHighlights('black');
@@ -62,7 +63,7 @@ var onDrop = function(source, target) {
   boardEl.find('.square-' + source).addClass('highlight-white');
   boardEl.find('.square-' + target).addClass('highlight-white');
 
-  updateStatus();
+  updateStatus(move);
   // engine.prepareMove();
 };
 
@@ -91,7 +92,7 @@ var onMouseoutSquare = function (square, piece) {
   unHighlightMoves();
 }
 
-var updateStatus = function() {
+var updateStatus = function(move) {
   var status = '';
 
   var moveColor = 'White';
@@ -109,7 +110,33 @@ var updateStatus = function() {
       status += ', ' + moveColor + ' is in check';
     }
   }
-
+  if (move && move.captured) {
+    let piece = game.turn();
+    console.log(move.captured);
+    switch (move.captured) {
+			case game.PAWN:
+				piece += 'P';
+				break;
+			case game.KNIGHT:
+				piece += 'N';
+				break;
+			case game.BISHOP:
+				piece += 'B';
+				break;
+			case game.ROOK:
+				piece += 'R';
+				break;
+			case game.QUEEN:
+				piece += 'Q';
+				break;
+			case game.KING:
+				piece += 'K';
+				break;
+			default:
+				console.log('unknown piece capture');
+				break;
+		}
+  }
   $('#status').html(status);
 }
 
