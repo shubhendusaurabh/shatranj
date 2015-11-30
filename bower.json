@@ -24,6 +24,7 @@
   "dependencies": {
     "jquery": "~2.1.4",
     "bootstrap-material-design": "~0.4.4",
-    "chess.js": "~0.9.1"
+    "chess.js": "~0.9.1",
+    "lodash": "~3.10.1"
   }
 }

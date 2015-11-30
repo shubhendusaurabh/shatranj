@@ -66,8 +66,9 @@ module.exports = function (server) {
       });
       socket.room.gameStatus = 'stopped';
       socket.leave(socket.room.id);
-      io.to(socket.room.id).emit('stop', {data: data, gameStatus: gameStatus});
+      io.to(socket.room.id).emit('stop', {data: data, gameStatus: socket.room.gameStatus});
       io.to(socket.room.id).emit('alert', {reason: 'game stopped due to opponent resign.'});
+      //TODO if both users leave close room
     });
     socket.on('move', function (data) {
       if (!socket.room) {
