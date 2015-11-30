@@ -45,7 +45,10 @@ var highlightMoves = function (square) {
   squareEl.css('background', background);
 };
 
-var onDragStart = function (source, piece, position, orientation) {
+var onDragStart = function (source, piece, position) {
+  if (game.turn() != orientation) {
+    return false;
+  }
   if (game.game_over() == true || (game.turn() == 'w' && piece.search('/^b/') !== -1) || game.turn() === 'b' && piece.search('/^w/') !== -1) {
     return false;
   }
@@ -445,6 +448,7 @@ function engineGame(options) {
 
 var socket = io.connect('http://localhost:3000');
 var orientation;
+
 socket.on('connected', function (data) {
   console.log(data);
   socket.emit('move', {msg: 'hello'});
@@ -457,8 +461,11 @@ socket.on('roomFull', function (data) {
       orientation = user.orientation;
     }
   });
-  board.orientation(orientation);
-  console.log('Room is full, Starting game', data);
+  // change orientation if black as white is default
+  if (orientation == 'b') {
+    board.orientation('black');
+  }
+  console.log('Room is full, Starting game', data, orientation);
 });
 
 // on start give option to select side b/w/random if starting
@@ -481,14 +488,3 @@ socket.on('move', function (data) {
   game.move(data);
   board.position(game.fen());
 });
-
-// socket.on('orientationSelect', function (data) {
-//   console.log(data);
-//   orientation = data.orientation;
-//   $('input[name="orientation"]:radio').attr('disabled', true);
-//   $('input[name="orientation"]').each(function (index, input) {
-//     if ($(input).val() == orientation) {
-//       $(input.attr('checked', 'checked'));
-//     }
-//   });
-// });

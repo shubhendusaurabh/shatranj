@@ -38,12 +38,13 @@ module.exports = function (server) {
           user.status = 'playing';
         });
         console.log(room.name, room.id);
+        // if already in room return false
         // give preference to 1st user to his preferred choice
         if (room.players[0].orientation == room.players[1].orientation) {
-          if (room.players[0].orientation == 'white') {
-            room.players[1].orientation = 'black';
+          if (room.players[0].orientation == 'w') {
+            room.players[1].orientation = 'b';
           } else {
-            room.players[1].orientation = 'white';
+            room.players[1].orientation = 'w';
           }
         }
         io.to(room.id).emit('roomFull', {users: room.players});
