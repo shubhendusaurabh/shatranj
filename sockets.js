@@ -29,7 +29,6 @@ module.exports = function (server) {
       room.addPlayer(user);
       socket.room = room;
       user.status = 'waiting';
-      console.log(socket.room, room);
       socket.join(room.id);
       if (room.status == 'full') {
         users = room.getPlayers();
@@ -53,6 +52,21 @@ module.exports = function (server) {
       console.log(data);
     });
 
+    socket.on('stop', function (data) {
+      if (!socket.room) {
+        return false;
+      }
+      console.log(socket.id, 'stopped game', data);
+      socket.room.removePlayer(user);
+      user.orientation = null;
+      // change room users status to waiting
+      _.map(socket.room.players, function (player) {
+        player.status = 'waiting';
+      });
+      socket.leave(socket.room.id);
+      io.to(socket.room.id).emit('stop', data);
+      io.to(socket.room.id).emit('alert', {reason: 'game stopped due to opponent resign.'});
+    });
     socket.on('move', function (data) {
       if (!socket.room) {
         return false;

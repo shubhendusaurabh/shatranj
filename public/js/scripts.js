@@ -138,7 +138,7 @@ var intialConfig = {
   position: 'start',
   draggable: false,
   pieceTheme: '/public/img/chesspieces/wikipedia/{piece}.png',
-  showErrors: true
+  showErrors: 'console'
 };
 
 board = ChessBoard('board', intialConfig);
@@ -154,7 +154,12 @@ var playingConfig = {
   onMouseoutSquare: onMouseoutSquare,
   onMouseoverSquare: onMouseoverSquare,
   onMoveEnd: onMoveEnd,
-  showErrors: true
+  showErrors: true,
+  moveSpeed: 'slow',
+  appearSpeed: 'slow',
+  snapbackSpeed: 'slow',
+  snapSpeed: 'slow',
+  thrashSpeed: 'slow'
 };
 
 
@@ -483,8 +488,22 @@ $('.startGame').on('click', function (e) {
   return false;
 });
 
+$('.stopGame').on('click', function (e) {
+  console.log('stopping game');
+  socket.emit('stop', {stop: true});
+});
+
+socket.on('stop', function (data) {
+  console.log(data);
+})
+
 socket.on('move', function (data) {
   console.log(data);
   game.move(data);
   board.position(game.fen());
+});
+
+socket.on('alert', function (data) {
+  alert(data.reason);
+  console.log('alert', data);
 });

@@ -7,16 +7,16 @@ function Room(id) {
   this.status = 'available';
 };
 
-Room.prototype.addPlayer = function (playerId) {
+Room.prototype.addPlayer = function (player) {
   if (this.getStatus() === 'available') {
-    this.players.push(playerId);
+    this.players.push(player);
   }
   this.setStatus();
 };
 
-Room.prototype.removePlayer = function (playerId) {
+Room.prototype.removePlayer = function (currPlayer) {
   _.remove(this.players, function (player) {
-    player.id == playerId;
+    player.id == currPlayer.id;
   });
 };
 
