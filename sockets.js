@@ -36,6 +36,7 @@ module.exports = function (server) {
         _.map(users, function (user) {
           user.status = 'playing';
         });
+        room.gameStatus = 'inProgress';
         console.log(room.name, room.id);
         // if already in room return false
         // give preference to 1st user to his preferred choice
@@ -46,7 +47,7 @@ module.exports = function (server) {
             room.players[1].orientation = 'w';
           }
         }
-        io.to(room.id).emit('roomFull', {users: room.players});
+        io.to(room.id).emit('roomFull', {users: room.players, gameStatus: room.gameStatus});
         io.to(room.id).emit('begin', {});
       }
       console.log(data);
@@ -63,8 +64,9 @@ module.exports = function (server) {
       _.map(socket.room.players, function (player) {
         player.status = 'waiting';
       });
+      socket.room.gameStatus = 'stopped';
       socket.leave(socket.room.id);
-      io.to(socket.room.id).emit('stop', data);
+      io.to(socket.room.id).emit('stop', {data: data, gameStatus: gameStatus});
       io.to(socket.room.id).emit('alert', {reason: 'game stopped due to opponent resign.'});
     });
     socket.on('move', function (data) {

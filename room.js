@@ -5,6 +5,7 @@ function Room(id) {
   this.players = [];
   this.playersLimit = 2;
   this.status = 'available';
+  this.gameStatus = 'stopped';
 };
 
 Room.prototype.addPlayer = function (player) {

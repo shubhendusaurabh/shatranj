@@ -453,6 +453,7 @@ function engineGame(options) {
 
 var socket = io.connect('http://localhost:3000');
 var orientation;
+var gameStatus;
 
 socket.on('connected', function (data) {
   console.log(data);
@@ -471,6 +472,7 @@ socket.on('roomFull', function (data) {
     board.orientation('black');
   }
   console.log('Room is full, Starting game', data, orientation);
+  gameStatus = data.gameStatus;
 });
 
 // on start give option to select side b/w/random if starting
@@ -494,8 +496,9 @@ $('.stopGame').on('click', function (e) {
 });
 
 socket.on('stop', function (data) {
+  gameStatus = data.gameStatus;
   console.log(data);
-})
+});
 
 socket.on('move', function (data) {
   console.log(data);
