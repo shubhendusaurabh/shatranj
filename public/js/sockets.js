@@ -6,6 +6,7 @@ socket.on('connected', function (data) {
 });
 socket.on('roomFull', function (data) {
   board.destroy();
+  game.reset();
   board = ChessBoard('board', playingConfig);
   data.users.forEach(function (user) {
     if (user.id == socket.id) {

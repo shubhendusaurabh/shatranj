@@ -77,5 +77,24 @@ module.exports = function (server) {
       io.to(socket.room.id).emit('move', data);
       console.log(data);
     });
+
+    socket.on('disconnect', function () {
+      console.log('disconnect', socket.id);
+      _.remove(users, function (user) {
+        user.id == socket.id;
+      });
+      if (!socket.room) {
+        return false;
+      }
+      socket.room.removePlayer(user);
+      user.orientation = null;
+      _.map(socket.room.players, function (player) {
+        player.status = 'waiting';
+      });
+      socket.room.gameStatus = 'stopped';
+      socket.leave(socket.room.id);
+      io.to(socket.room.id).emit('stop', {gameStatus: socket.room.gameStatus});
+      io.to(socket.room.id).emit('alert', {reason: 'game stopped due to opponent left.'});
+    });
   });
 };
