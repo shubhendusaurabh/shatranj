@@ -136,6 +136,15 @@ var updateStatus = function(move) {
 				console.log('unknown piece capture');
 				break;
 		}
+
+    var img = $('<img>');
+    img.attr('src', '/public/img/chesspieces/wikipedia/'+piece+'.png');
+
+    if (orientation == game.turn()) {
+      img.appendTo('.opponent-captured');
+    } else {
+      img.appendTo('.self-captured');
+    }
   }
   $('#status').html(status);
 }

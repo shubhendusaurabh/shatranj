@@ -3,12 +3,11 @@
 module.exports = function (server) {
   var _ = require('lodash');
   var io = require('socket.io').listen(server);
-
+  var uuid = require('node-uuid');
   var Room = require('./room');
 
   var users = [];
   var rooms = [];
-  var roomNames = ['shu', 'bhu'];
 
   io.on('connection', function (socket) {
     users.push({id: socket.id, status: 'idle'});
@@ -22,7 +21,8 @@ module.exports = function (server) {
       var room = _(rooms).find({status: 'available'});
       console.log(room);
       if (!room) {
-        room = new Room(_.sample(roomNames));
+        //TODO unique room
+        room = new Room(uuid.v1());
         console.log(room);
         rooms.push(room);
       }
@@ -37,7 +37,7 @@ module.exports = function (server) {
           user.status = 'playing';
         });
         room.gameStatus = 'inProgress';
-        console.log(room.name, room.id);
+        console.log(room.name, room.id, room.gameStatus);
         // if already in room return false
         // give preference to 1st user to his preferred choice
         if (room.players[0].orientation == room.players[1].orientation) {
