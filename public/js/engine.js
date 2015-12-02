@@ -89,7 +89,7 @@
     this.uciCmd('setoption name King Safety value 0'); // Aggressiveness 100
   };
 
-  Engine.prototype. = function (contempt) {
+  Engine.prototype.setContempt = function (contempt) {
     this.uciCmd('setoption name Contempt value ' + contempt);
   };
 
