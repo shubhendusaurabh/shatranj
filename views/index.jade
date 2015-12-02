@@ -1,9 +1,9 @@
 doctype
-html
+html(lang="en")
   head
     meta(charset="utf-8")
     meta(http-equiv="X-UA-Compatible", content="IE=edge,chrome=1")
-    title #{title}
+    title Shatranj
     meta(name="description", content="Shatranj, the Chess")
     meta(name="author", content="shubhu")
     meta(name="viewport", content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0")
@@ -11,14 +11,15 @@ html
     meta(name="apple-mobile-web-app-status-bar-style", content="black")
     link(rel="shortcut icon", href="/public/img/favicon.ico")
     
-    link(rel="stylesheet", href="/bower_components/bootstrap/dist/css/bootstrap.min.css")
-    link(rel="stylesheet", href="/bower_components/bootstrap-material-design/dist/css/roboto.min.css")
-    link(rel="stylesheet", href="/bower_components/bootstrap-material-design/dist/css/material-fullpalette.css")
-    link(rel="stylesheet", href="/bower_components/bootstrap-material-design/dist/css/ripples.min.css")
+    link(rel="stylesheet", href="/bower_components/angular-material/angular-material.css")
     link(rel="stylesheet", href="/public/css/chessboard-0.3.0.min.css")
     link(rel="stylesheet", href="/public/css/styles.css")
+    style(type="text/css").
+        [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+          display: none !important;
+        }
   
-  body
+  body(ng-app="shatranj", layout="row", ng-cloak)
     header.header
       //- h1 Shatranj
     article.container
@@ -36,10 +37,16 @@ html
     footer.footer
   script(src="/bower_components/jquery/dist/jquery.min.js")
   script(src="/bower_components/lodash/lodash.min.js")
-  script(src="/bower_components/bootstrap/dist/js/bootstrap.min.js")
+  script(src="/bower_components/angular/angular.js")
+  script(src="/bower_components/angular-route/angular-route.js")
+  script(src="/bower_components/angular-animate/angular-animate.js")
+  script(src="/bower_components/angular-aria/angular-aria.js")
+  script(src="/bower_components/angular-material/angular-material.js")
   script(src="/bower_components/chess.js/chess.min.js")
   script(src="/public/js/chessboard-0.3.0.min.js")
   script(src="/socket.io/socket.io.js")
+  script(src="/public/js/app.js")
+  script(src="/public/js/socketService.js")
   script(src="/public/js/main.js")
   script(src="/public/js/match.js")
   script(src="/public/js/engine.js")
