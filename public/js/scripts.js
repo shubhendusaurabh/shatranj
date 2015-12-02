@@ -44,7 +44,7 @@ var onDrop = function(source, target) {
   var move = game.move({
     from: source,
     to: target,
-    promotion: 'q' //promoting queen as default
+    promotion: 'q' //TODO promoting queen as default
   });
 
   if (move === null) {
@@ -465,6 +465,9 @@ function engineGame(options) {
     }
   };
 };
+
+// var engine = new shatranj.Engine({stockfishUrl: '/public/js/stockfish.js', color: 'b', name: 'AI', skillLevel: 5 });
+var match = new shatranj.Match();
 
 // var engine = engineGame({skill: 20});
 // engine.reset();

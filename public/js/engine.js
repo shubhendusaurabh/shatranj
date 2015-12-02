@@ -1,4 +1,4 @@
-(function() {
+(function(shatranj) {
   'use strict';
 
   function Engine(options) {
@@ -26,6 +26,7 @@
   };
 
   Engine.prototype.onEngineMessage = function (event) {
+    console.log(event.data);
     var line;
     if (event && typeof event === 'object') {
       line = event.data;
@@ -88,7 +89,7 @@
     this.uciCmd('setoption name King Safety value 0'); // Aggressiveness 100
   };
 
-  Engine.prototype.setContempt = function (contempt) {
+  Engine.prototype. = function (contempt) {
     this.uciCmd('setoption name Contempt value ' + contempt);
   };
 
@@ -96,4 +97,6 @@
     this.uciCmd('setoption name Aggressiveness value ' + value);
   };
 
-}());
+  shatranj.Engine = Engine;
+
+}(shatranj));

@@ -1,4 +1,4 @@
-(function() {
+(function(shatranj) {
   'use strict';
 
   function Match() {
@@ -20,19 +20,38 @@
       showErrors: true
     });
 
-    this.player1 = new Player({
+    this.engine = new shatranj.Engine({
       color: 'b',
-      name: 'Player1',
-      stockfishUrl: '/stockfish/src/stockfish.js',
+      name: 'AI',
+      stockfishUrl: '/public/js/stockfish.js',
       skillLevel: this.skillLevel,
       onReady: this.onPlayerReady.bind(this),
       onInfo: this.onPlayerInfo.bind(this),
       onMove: this.onPlayerMove.bind(this)
     });
-    this.player1.startNewGame();
+    this.engine.startNewGame();
 
-    this.setTimePerTurn(200, true);
-    this.setSkillLevel(20, true);
-    this.setContempt(0, true);
+    // this.setTimePerTurn(200, true);
+    this.engine.setSkillLevel(20);
+    this.engine.setContempt(0);
   }
-}());
+
+  Match.prototype.onPlayerReady = function () {
+    if (this.engine.engineReady == true) {
+      this.gameReady = true;
+    }
+  };
+
+  Match.prototype.onPlayerInfo = function (info) {
+    $('.engine-info').html(info);
+  };
+
+  Match.prototype.onPlayerMove = function (move) {
+    var result = this.game.move(move);
+    //on game over
+    //else start next turn
+    console.log(result);
+  };
+
+  shatranj.Match = Match;
+}(shatranj));
