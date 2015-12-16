@@ -19,11 +19,17 @@ html(lang="en")
           display: none !important;
         }
   
-  body(ng-app="shatranj", layout="row", ng-cloak)
-    header.header
+  body(ng-app="shatranj", layout="column", ng-cloak)
+    md-toolbar(layout="row")
       //- h1 Shatranj
-    article.container
-      article.chessboard-container
+    article(flex, layout="row")
+      md-sidenav.md-whiteframe-z2(md-is-locked-open="true")
+        md-list
+          md-item
+            md-button Chess
+          md-item
+            md-button Checkers
+      md-content(flex, id="content")
         div.opponent-captured
         p#status.text-info
         div#board
@@ -32,8 +38,8 @@ html(lang="en")
         input(type="radio", name="orientation", value="w")
         label Black
         input(type="radio", name="orientation", value="b")
-      button.btn.startGame Start
-      button.btn.stopGame Stop
+        button.btn.startGame Start
+        button.btn.stopGame Stop
     footer.footer
   script(src="/bower_components/jquery/dist/jquery.min.js")
   script(src="/bower_components/lodash/lodash.min.js")

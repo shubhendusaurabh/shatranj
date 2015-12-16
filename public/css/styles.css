@@ -1,5 +1,6 @@
 #board {
-  width: 50%;
+  width: 600px;
+  height: 600px;
 }
 .highlight-white,
 .hightlight-black {
